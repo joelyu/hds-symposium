@@ -1,0 +1,363 @@
+/* ---------------------------------------------------------------
+   HDS Symposium — rundown
+   Palette: Dracula
+   --------------------------------------------------------------- */
+
+:root {
+  --bg: #282a36;
+  --bg-raised: #2f313d;
+  --line: #44475a;
+  --fg: #f8f8f2;
+  --fg-dim: #b6b8c6;
+  --fg-faint: #7f8296;
+  --green: #50fa7b;
+  --cyan: #8be9fd;
+  --pink: #ff79c6;
+  --purple: #bd93f9;
+  --yellow: #f1fa8c;
+
+  --gutter: 5.5rem; /* width of the time column */
+  --mono:
+    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.65;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 7vw, 5rem) 1.5rem 4rem;
+  background-color: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Masthead ---------- */
+
+.masthead {
+  margin-bottom: 3.5rem;
+}
+
+.eyebrow {
+  margin: 0 0 1.25rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--pink);
+}
+
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 1.75rem;
+  height: 1px;
+  margin-right: 0.75rem;
+  vertical-align: 0.28em;
+  background: var(--pink);
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.7rem, 6vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--green);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.8rem;
+  color: var(--cyan);
+}
+
+.meta-sep {
+  color: var(--fg-faint);
+}
+
+.meta-place {
+  color: var(--fg-dim);
+}
+
+/* ---------- Rundown ---------- */
+
+.rundown {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.slot {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--gutter) 1fr;
+  gap: 0 1.5rem;
+  padding: 1.75rem 0 2rem;
+  border-top: 1px solid var(--line);
+}
+
+.slot:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+/* the vertical spine through the time gutter */
+.slot::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--gutter) - 0.75rem);
+  width: 1px;
+  background: var(--line);
+}
+
+.slot:first-child::before {
+  top: 0.55rem;
+}
+
+.slot:last-child::before {
+  bottom: auto;
+  height: 1.5rem;
+}
+
+/* the dot on the spine */
+.slot-time {
+  position: relative;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--yellow);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.slot-time::after {
+  content: "";
+  position: absolute;
+  top: 0.5rem;
+  right: -0.98rem;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--yellow);
+}
+
+.slot--quiet .slot-time {
+  color: var(--fg-faint);
+}
+
+.slot--quiet .slot-time::after {
+  border-color: var(--fg-faint);
+}
+
+.slot--finale .slot-time {
+  color: var(--pink);
+}
+
+.slot--finale .slot-time::after {
+  border-color: var(--pink);
+  background: var(--pink);
+}
+
+.slot-body {
+  min-width: 0;
+}
+
+.slot-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--fg);
+}
+
+.slot--quiet .slot-title {
+  font-weight: 400;
+  color: var(--fg-dim);
+}
+
+.slot--finale .slot-title {
+  color: var(--pink);
+}
+
+.slot-lead {
+  margin: 0.75rem 0 0;
+  color: var(--purple);
+  font-weight: 700;
+}
+
+.slot-sub {
+  margin: 0.15rem 0 0;
+  color: var(--fg-dim);
+}
+
+/* panellists */
+.people {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.5rem;
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+}
+
+.people li {
+  padding: 0.15rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg-raised);
+  font-size: 0.75rem;
+  color: var(--cyan);
+}
+
+/* ---------- Talks ---------- */
+
+.talks {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  counter-reset: talk;
+}
+
+.talk {
+  counter-increment: talk;
+  position: relative;
+  padding: 0.7rem 0 0.7rem 2.25rem;
+  border-top: 1px dashed rgba(68, 71, 90, 0.85);
+}
+
+.talk:first-child {
+  border-top: 0;
+  padding-top: 0.2rem;
+}
+
+.talk::before {
+  content: counter(talk, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--fg-faint);
+}
+
+.talk:first-child::before {
+  top: 0.25rem;
+}
+
+.talk-title {
+  margin: 0;
+  color: var(--fg);
+  text-wrap: pretty;
+}
+
+.talk-speaker {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+  color: var(--green);
+}
+
+.talk-speaker::before {
+  content: "— ";
+  color: var(--fg-faint);
+}
+
+.talk-break {
+  margin: 0.9rem 0;
+  padding: 0.35rem 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+  text-align: center;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+/* ---------- Footer ---------- */
+
+.colophon {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+.colophon p {
+  margin: 0;
+}
+
+/* ---------- Links ---------- */
+
+a {
+  color: var(--cyan);
+  font-weight: 700;
+  text-decoration-color: var(--line);
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--green);
+  text-decoration-color: currentColor;
+}
+
+/* ---------- Narrow screens: drop the gutter ---------- */
+
+@media (max-width: 520px) {
+  .slot {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+
+  .slot::before {
+    display: none;
+  }
+
+  .slot-time::after {
+    display: none;
+  }
+}
+
+/* ---------- Print ---------- */
+
+@media print {
+  :root {
+    --bg: #fff;
+    --bg-raised: #fff;
+    --line: #ccc;
+    --fg: #111;
+    --fg-dim: #444;
+    --fg-faint: #777;
+    --green: #111;
+    --cyan: #333;
+    --pink: #111;
+    --purple: #111;
+    --yellow: #111;
+  }
+
+  body {
+    max-width: none;
+    padding: 0;
+  }
+
+  .slot {
+    break-inside: avoid;
+  }
+}
