@@ -1,20 +1,27 @@
 /* ---------------------------------------------------------------
    HDS Symposium — rundown
-   Palette: Dracula
+
+   Colour hierarchy: ONE accent (green) marks structure — the title
+   and the clock. Everything else is a neutral at one of three
+   weights, so emphasis comes from contrast, not from hue.
+
+     accent     title, times, timeline dots, links
+     --fg       primary text: session + talk titles
+     --fg-dim   supporting text: subtitles, speakers, venue
+     --fg-faint labels, numerals, separators, anything muted
    --------------------------------------------------------------- */
 
 :root {
   --bg: #282a36;
   --bg-raised: #2f313d;
   --line: #44475a;
+  --line-soft: #3a3d4d;
+
   --fg: #f8f8f2;
   --fg-dim: #b6b8c6;
   --fg-faint: #7f8296;
-  --green: #50fa7b;
-  --cyan: #8be9fd;
-  --pink: #ff79c6;
-  --purple: #bd93f9;
-  --yellow: #f1fa8c;
+
+  --accent: #50fa7b;
 
   --gutter: 5.5rem; /* width of the time column */
   --mono:
@@ -49,7 +56,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--pink);
+  color: var(--fg-faint);
 }
 
 .eyebrow::before {
@@ -59,7 +66,7 @@ body {
   height: 1px;
   margin-right: 0.75rem;
   vertical-align: 0.28em;
-  background: var(--pink);
+  background: var(--accent);
 }
 
 h1 {
@@ -69,7 +76,7 @@ h1 {
   line-height: 1.12;
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  color: var(--green);
+  color: var(--accent);
 }
 
 .meta {
@@ -80,15 +87,16 @@ h1 {
   padding-top: 1.25rem;
   border-top: 1px solid var(--line);
   font-size: 0.8rem;
-  color: var(--cyan);
+  color: var(--fg-dim);
+}
+
+.meta-date {
+  color: var(--fg);
+  font-weight: 700;
 }
 
 .meta-sep {
   color: var(--fg-faint);
-}
-
-.meta-place {
-  color: var(--fg-dim);
 }
 
 /* ---------- Rundown ---------- */
@@ -138,7 +146,7 @@ h1 {
   position: relative;
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--yellow);
+  color: var(--accent);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -152,9 +160,10 @@ h1 {
   height: 7px;
   border-radius: 50%;
   background: var(--bg);
-  border: 2px solid var(--yellow);
+  border: 2px solid var(--accent);
 }
 
+/* breaks recede: neutral, hollow */
 .slot--quiet .slot-time {
   color: var(--fg-faint);
 }
@@ -163,13 +172,9 @@ h1 {
   border-color: var(--fg-faint);
 }
 
-.slot--finale .slot-time {
-  color: var(--pink);
-}
-
+/* the finale is the one filled dot on the spine */
 .slot--finale .slot-time::after {
-  border-color: var(--pink);
-  background: var(--pink);
+  background: var(--accent);
 }
 
 .slot-body {
@@ -189,13 +194,9 @@ h1 {
   color: var(--fg-dim);
 }
 
-.slot--finale .slot-title {
-  color: var(--pink);
-}
-
 .slot-lead {
   margin: 0.75rem 0 0;
-  color: var(--purple);
+  color: var(--fg);
   font-weight: 700;
 }
 
@@ -204,23 +205,35 @@ h1 {
   color: var(--fg-dim);
 }
 
-/* panellists */
-.people {
+/* ---------- Names ----------
+   One treatment for everyone who speaks, panellist or student:
+   dim, dash-led, middot-separated. Only the margin differs by
+   context. */
+
+.speakers {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem 0.5rem;
   list-style: none;
   margin: 1rem 0 0;
   padding: 0;
+  font-size: 0.8rem;
+  color: var(--fg-dim);
 }
 
-.people li {
-  padding: 0.15rem 0.6rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--bg-raised);
-  font-size: 0.75rem;
-  color: var(--cyan);
+.speakers::before {
+  content: "\2014";
+  margin-right: 0.5rem;
+  color: var(--fg-faint);
+}
+
+.speakers li + li::before {
+  content: "\00b7";
+  margin: 0 0.5rem;
+  color: var(--fg-faint);
+}
+
+.talk .speakers {
+  margin-top: 0.2rem;
 }
 
 /* ---------- Talks ---------- */
@@ -236,10 +249,12 @@ h1 {
   counter-increment: talk;
   position: relative;
   padding: 0.7rem 0 0.7rem 2.25rem;
-  border-top: 1px dashed rgba(68, 71, 90, 0.85);
+  border-top: 1px dashed var(--line-soft);
 }
 
-.talk:first-child {
+/* no dashed rule where a solid edge already divides the list */
+.talk:first-child,
+.talk-break + .talk {
   border-top: 0;
   padding-top: 0.2rem;
 }
@@ -254,7 +269,8 @@ h1 {
   color: var(--fg-faint);
 }
 
-.talk:first-child::before {
+.talk:first-child::before,
+.talk-break + .talk::before {
   top: 0.25rem;
 }
 
@@ -262,17 +278,6 @@ h1 {
   margin: 0;
   color: var(--fg);
   text-wrap: pretty;
-}
-
-.talk-speaker {
-  margin: 0.2rem 0 0;
-  font-size: 0.8rem;
-  color: var(--green);
-}
-
-.talk-speaker::before {
-  content: "— ";
-  color: var(--fg-faint);
 }
 
 .talk-break {
@@ -307,14 +312,13 @@ h1 {
 /* ---------- Links ---------- */
 
 a {
-  color: var(--cyan);
+  color: var(--accent);
   font-weight: 700;
   text-decoration-color: var(--line);
   text-underline-offset: 3px;
 }
 
 a:hover {
-  color: var(--green);
   text-decoration-color: currentColor;
 }
 
@@ -326,10 +330,7 @@ a:hover {
     gap: 0.4rem;
   }
 
-  .slot::before {
-    display: none;
-  }
-
+  .slot::before,
   .slot-time::after {
     display: none;
   }
@@ -342,14 +343,11 @@ a:hover {
     --bg: #fff;
     --bg-raised: #fff;
     --line: #ccc;
+    --line-soft: #ddd;
     --fg: #111;
     --fg-dim: #444;
     --fg-faint: #777;
-    --green: #111;
-    --cyan: #333;
-    --pink: #111;
-    --purple: #111;
-    --yellow: #111;
+    --accent: #111;
   }
 
   body {
