@@ -207,12 +207,13 @@ h1 {
 
 /* ---------- Names ----------
    One treatment for everyone who speaks, panellist or student:
-   dim, dash-led, middot-separated. Only the margin differs by
-   context. */
+   dim, middot-separated, at one size. Only the lead-in changes —
+   a dash by default, or a role label where the role needs saying. */
 
 .speakers {
   display: flex;
   flex-wrap: wrap;
+  align-items: baseline;
   list-style: none;
   margin: 1rem 0 0;
   padding: 0;
@@ -224,6 +225,22 @@ h1 {
   content: "\2014";
   margin-right: 0.5rem;
   color: var(--fg-faint);
+}
+
+/* a labelled row: the label sits in its own mini-gutter so stacked
+   rows line their names up */
+.speakers[data-role]::before {
+  content: attr(data-role);
+  min-width: 6rem;
+  margin-right: 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.speakers + .speakers {
+  margin-top: 0.4rem;
 }
 
 .speakers li + li::before {
@@ -333,6 +350,11 @@ a:hover {
   .slot::before,
   .slot-time::after {
     display: none;
+  }
+
+  .speakers[data-role]::before {
+    min-width: 100%;
+    margin-right: 0;
   }
 }
 
